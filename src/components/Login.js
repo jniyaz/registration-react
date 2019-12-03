@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios';
+import axios from 'axios'
+import cookie from 'js-cookie'
 
 export default class Login extends Component {
     constructor(props) {
@@ -15,10 +16,12 @@ export default class Login extends Component {
         const data = {email: this.state.email, password: this.state.password};
         
         axios.post("http://cus-tw.localhost/api/auth/login", data)
-        .then(res => res.json())
+        .then(res => {
+            cookie.set('token', res.data.access_token);
+            cookie.set('user', res.data.user);
+            this.props.history.push('/profile');
+        })
         .catch(e => this.setState({errors: e.response.data}));
-
-        // this.props.history.push('/profile');
     }
     handleInput = (e) => {
         e.preventDefault();
