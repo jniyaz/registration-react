@@ -7,7 +7,7 @@ import cookie from 'js-cookie';
 import { connect } from 'react-redux'
 
 const AuthRoute = ({ component: Component, ...rest }) => {
-  console.log(rest.loggedIn);
+  // console.log(rest.loggedIn);
     const token = cookie.get('token');
     return (
       <Route
