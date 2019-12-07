@@ -11,12 +11,12 @@ function Layout(props) {
     }
     return (
         <div>
-            <nav className="flex">
-                <h1 className="w-3/4 py-4 mx-10 text-lg">React App</h1>
-                <div className="w-1/4 justify-end">
+            <nav className="flex justify-between">
+                <Link className="py-4 mx-10" to="/">React App</Link>
+                <div className="flex justify-between">
                     { 
-                    !props.loggedIn ? 
-                        (<Fragment>
+                    !props.loggedIn  
+                    ? (<Fragment>
                             <Link className="m-3 py-2 px-3 rounded inline-block bg-blue-700 text-white" to="/login">Login</Link>
                             <Link className="m-3 py-2 px-3 rounded inline-block bg-blue-700 text-white" to="/register">Register</Link>
                         </Fragment>)

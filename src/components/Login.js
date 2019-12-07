@@ -24,7 +24,7 @@ class Login extends Component {
             // dispatch an action to redux store
             this.props.setLogin(res.data.user);
 
-            this.props.history.push('/profile');
+            this.props.history.push('/dashboard');
         })
         .catch(e => this.setState({errors: e.response.data}));
     }

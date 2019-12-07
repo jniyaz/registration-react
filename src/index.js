@@ -21,9 +21,10 @@ jwt.verify(token, jwt_token, function(err, decoded) {
         }
         console.log(decoded);
     } else {
-        if(decoded.iss == 'http://cus-tw.localhost/api/auth/login')
-        cookie.remove('token');
-        token = null;
+        if(decoded != undefined && decoded.iss == 'http://cus-tw.localhost/api/auth/login') {
+            cookie.remove('token');
+            token = null;
+        }
     }
 });
 
