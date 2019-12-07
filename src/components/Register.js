@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
+import Error from './shared/Error'
 
 export default class Register extends Component {
     constructor(props) {
@@ -25,9 +26,11 @@ export default class Register extends Component {
         .then(res => {
             cookie.set('token', res.data.access_token);
             cookie.set('user', res.data.user);
-            this.props.history.push('/profile');
+            if(res.data.access_token != null) {
+                this.props.history.push('/profile');
+            }
         })
-        .catch(e => this.setState({errors: e.response.data}));
+        .catch(e => this.setState({ errors: e.response.data.errors }));
     }
     handleInput = (e) => {
         e.preventDefault();
@@ -36,7 +39,6 @@ export default class Register extends Component {
         this.setState({[name]: value});
     }
     render() {
-        const error = this.state.errors
         return (
             <div className="flex">
                 <div className="w-1/3" />
@@ -44,9 +46,6 @@ export default class Register extends Component {
                     <form className="px-8 pt-6 pb-8 mb-4" onSubmit={this.handleForm}>
                         <div className="mb-4">
                             <h4 className="block text-gray-700 text-lg font-bold mb-2 border-b">Register</h4>
-                        </div>
-                        <div className="mb-4">
-                            {error.errors ? (<p className="text-red-500 text-xs italic">{error.errors}</p>) : ('')}
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
@@ -59,7 +58,8 @@ export default class Register extends Component {
                               type="text"
                               placeholder="Name"
                               onChange={this.handleInput}
-                              required />
+                              />
+                              <Error error={this.state.errors['name'] ? this.state.errors['name'] : null} />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
@@ -72,7 +72,8 @@ export default class Register extends Component {
                               type="email"
                               placeholder="Email"
                               onChange={this.handleInput}
-                              required />
+                              />
+                              <Error error={this.state.errors['email'] ? this.state.errors['email'] : null} />
                         </div>
                         <div className="mb-6">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -85,8 +86,8 @@ export default class Register extends Component {
                               name="password"
                               placeholder="***********"
                               onChange={this.handleInput}
-                              required />
-                            {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
+                              />
+                            <Error error={this.state.errors['password'] ? this.state.errors['password'] : null} />
                         </div>
                         <div className="mb-6">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -99,8 +100,7 @@ export default class Register extends Component {
                               type="password"
                               placeholder="***********"
                               onChange={this.handleInput}
-                              required />
-                            {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
+                              />
                         </div>
                         <div className="flex items-center justify-between">
                             <button

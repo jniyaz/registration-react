@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import cookie from 'js-cookie'
 import { connect } from 'react-redux'
+import Error from './shared/Error'
 
 class Login extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class Login extends Component {
 
             this.props.history.push('/dashboard');
         })
-        .catch(e => this.setState({errors: e.response.data}));
+        .catch(e => this.setState({ errors: e.response.data.errors }));
     }
     handleInput = (e) => {
         e.preventDefault();
@@ -35,7 +36,6 @@ class Login extends Component {
         this.setState({[name]: value});
     }
     render() {
-        const error = this.state.errors
         return (
             <div className="flex">
                 <div className="w-1/3" />
@@ -44,21 +44,19 @@ class Login extends Component {
                         <div className="mb-4">
                             <h4 className="block text-gray-700 text-lg font-bold mb-2 border-b">Please Login</h4>
                         </div>
-                        <div className="mb-2">
-                            {error.errors ? (<p className="text-red-500 text-xs italic">{error.errors}</p>) : ('')}
-                        </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                                Username
+                                Email
                             </label>
                             <input
                               onChange={this.handleInput}
-                              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                               id="email"
                               name="email"
                               type="text"
                               placeholder="Email"
-                              required />
+                               />
+                            <Error error={this.state.errors['email'] ? this.state.errors['email'] : null} />
                         </div>
                         <div className="mb-6">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -71,8 +69,8 @@ class Login extends Component {
                               name="password"
                               type="password"
                               placeholder="**********"
-                              required />
-                            {/* <p className="text-red-500 text-xs italic">Please choose a password.</p> */}
+                               />
+                            <Error error={this.state.errors['password'] ? this.state.errors['password'] : null} />
                         </div>
                         <div className="flex items-center justify-between">
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import {connect} from 'react-redux'
+import axios from 'axios'
+import cookie from 'js-cookie';
 
 class Profile extends Component {
 
@@ -18,6 +20,21 @@ class Profile extends Component {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({[name]: value});
+    }
+
+    handleForm = (e) => {
+        e.preventDefault();
+        const access_token = cookie.get('token');
+        const data = {email: this.state.email, name: this.state.name};
+        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+        axios.patch("http://cus-tw.localhost/api/auth/update", data)
+        .then(res => {
+            console.log(res.data);
+            // dispatch an action to redux store
+            // this.props.setLogin(res.data.user);
+            // this.props.history.push('/dashboard');
+        })
+        .catch(e => this.setState({errors: e}));
     }
 
     render() {
